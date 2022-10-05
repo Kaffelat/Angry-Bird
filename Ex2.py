@@ -1,4 +1,7 @@
 
+from re import L
+
+
 class Bird:
     def __init__(self, start, dir):
         self.pos = start
@@ -11,27 +14,25 @@ class Bird:
         if self.dir == 1:
             self.pos[1] = self.pos[1] + 1
         elif self.dir == 2:
-            self.pos[1] = self.pos[1] - 1
+            self.pos[0] = self.pos[1] + 1
         elif self.dir == 3:
-            self.dir[0] == self.pos[0] - 1
+            self.pos[1] == self.pos[1] - 1
         elif self.dir == 4:
-            self.dir[0] == self.pos[0] + 1
+            self.pos[0] == self.pos[0] - 1
         
 
     def turnLeft(self):
-        self.dir = self.dir - 1 
-        if self.dir >= 1:
+        if self.dir == 1:
             self.dir = 4
-        elif self.dir <= 4:
-            self.dir = 1
+        else:
+            self.dir -= 1
             
 
     def turnRight(self):
-        self.dir = self.dir + 1 
-        if self.dir >= 1:
-            self.dir = 4
-        elif self.dir <= 4:
+        if self.dir == 4:
             self.dir = 1
+        else:
+            self.dir += 1
 
     def loseGame(self):
         return 'you lost'
