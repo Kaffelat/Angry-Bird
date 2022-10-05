@@ -1,37 +1,116 @@
-from turtle import position
-
 
 class Bird:
-    def __init__(self):
-        self.startPosition = [2,5]
-        self.direction = 1
+    def __init__(self, start, dir):
+        self.pos = start
+        
+        self.dir = dir
 
-    def moveForward():
-        if Bird.direction == 1:
-            Bird.startPosition[1] = Bird.startPosition[1] + 1
-        elif Bird.direction == 2:
-            Bird.startPosition[1] = Bird.startPosition[1] - 1
-        elif Bird.direction == 3:
-            Bird.direction[0] == Bird.startPosition[0] - 1
-        elif Bird.direction == 4:
-            Bird.direction[0] == Bird.startPosition[0] + 1
-        pass
+        self.methods = {'f':self.moveForward,'l':self.turnLeft,'r':self.turnRight}
 
-    def turnLeft():
-        pass
+    def moveForward(self):
+        if self.dir == 1:
+            self.pos[1] = self.pos[1] + 1
+        elif self.dir == 2:
+            self.pos[1] = self.pos[1] - 1
+        elif self.dir == 3:
+            self.dir[0] == self.pos[0] - 1
+        elif self.dir == 4:
+            self.dir[0] == self.pos[0] + 1
+        
 
-    def turnRight():
-        pass
+    def turnLeft(self):
+        self.dir = self.dir - 1 
+        if self.dir >= 1:
+            self.dir = 4
+        elif self.dir <= 4:
+            self.dir = 1
+            
+
+    def turnRight(self):
+        self.dir = self.dir + 1 
+        if self.dir >= 1:
+            self.dir = 4
+        elif self.dir <= 4:
+            self.dir = 1
+
+    def loseGame(self):
+        return 'you lost'
+
+
 
 class Pig:
-    pass
+    def __init__(self, pos):
+        self.pos = pos
+        self.is_alive = True
+    
+    def die(self):
+        return 'Uff the pig is dead'
+    
 
 class Board:
-    pass
+    def __init__(self):
+        self.bird = Bird([2,5],1)
+        self.c = Bird.__dict__
+        self.pig = Pig([2,7])
+    
+    def run(self, cmd):
+        for i in cmd:
+            self.bird.methods[i]()
+
+    def display(self):
+            for i in range(1, 11):
+                for j in range(1, 11):
+                    if (i,j) == tuple(self.bird.pos):
+                        print('B', end=' ')
+                    elif (i,j) == tuple(self.pig.pos):
+                        print('P', end=' ')
+                    else:    
+                        print('*', end=' ')
+                print()
 
 class Workspace:
-    pass
+    def __init__(self):
+        self.moves = None
+
+    def instructions(self):
+        print('\nwhat steps do you want to perform?')
+        print('Options: move forward (f), turn left (l), turn right (r)')
+        print('Type "q" when finnished')
+    def commands(self):
+        l = []
+        q = True
+
+        while q:
+            x = input('Move: ')
+            if x == 'q':
+                q = False
+            else:
+                l.append(x)
+            
+        return l
+
 
 class Game:
-    pass
+    def main(self):
+        b = Board()
+        b.display()
+
+        w = Workspace()
+        w.instructions()
+
+        l = w.commands()
+        b.run(l)
+
+        print(self.win(b))
+        print(f'Birds position: {b.bird.pos}')
+        print(f'Pigs position: {b.pig.pos}')
+
+    def win(self, b):
+        if b.bird.pos == b.pig.pos:
+            return b.pig.die()
+        else:
+            return b.bird.loseGame()
+
+g = Game()
+g.main()
 
